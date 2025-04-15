@@ -7,14 +7,14 @@ public class ConsoleProgress implements Runnable {
     @Override
     public void run() {
         int i = 0;
-        try {
-            while (!Thread.currentThread().isInterrupted()) {
+        while (!Thread.currentThread().isInterrupted()) {
+            try {
                 System.out.print("\r Loading ... " + process[i % process.length]);
                 Thread.currentThread().sleep(500L);
                 i++;
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
         }
     }
 }
