@@ -13,14 +13,13 @@ public class AccountStorage {
 
     public boolean add(Account account) {
         synchronized (accounts) {
-            accounts.put(account.getId(), account);
-            return accounts.containsKey(account.getId());
+            return accounts.putIfAbsent(account.getId(), account) == null;
         }
     }
 
-    public synchronized void update(Account account) {
+    public synchronized boolean update(Account account) {
         synchronized (accounts) {
-            accounts.put(account.getId(), account);
+            return accounts.replace(account.getId(), account) != null;
         }
     }
 
