@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 
 public class ParseFile {
     private final File file;
-    private BufferedInputStream input;
 
     public ParseFile(File file) {
         this.file = file;
@@ -16,8 +15,7 @@ public class ParseFile {
 
     public String getContent(Predicate<Integer> predicate) throws IOException {
         StringBuilder result = new StringBuilder();
-        try {
-            input = new BufferedInputStream(new FileInputStream(file));
+        try (BufferedInputStream input = new BufferedInputStream(new FileInputStream(file))) {
             int data;
             while ((data = input.read()) != -1) {
                 if (predicate.test(data)) {
@@ -26,8 +24,6 @@ public class ParseFile {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            input.close();
         }
         return result.toString();
     }
